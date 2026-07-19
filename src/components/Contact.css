@@ -14,7 +14,7 @@
 
 .contact-form-container {
   background-color: var(--bg-card, #ffffff);
-  border: 1px solid var(--border-color, #e0e0e0);
+  border: 1px solid var(--border, #e0e0e0);
   border-radius: 8px;
   padding: 2rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -33,8 +33,8 @@
 }
 
 .need-help-btn {
-  background: white;
-  border: 1px solid #d1d5db;
+  background: var(--bg-primary, white);
+  border: 1px solid var(--border, #d1d5db);
   border-radius: 4px;
   padding: 0.2rem 0.5rem;
   font-size: 0.75rem;
@@ -44,7 +44,7 @@
 }
 
 .need-help-btn:hover {
-  background: #f9fafb;
+  background: var(--bg-secondary, #f9fafb);
 }
 
 .help-tooltip {
