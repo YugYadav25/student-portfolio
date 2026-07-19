@@ -7,7 +7,6 @@ function NavBar({ isDarkMode, toggleTheme }) {
       <div className="navbar-container">
         <div className="navbar-logo">
           <Link to="/" className="nav-logo-link">
-            <span className="logo-icon">◈</span>
             <span className="logo-text">Portfolio</span>
           </Link>
         </div>
