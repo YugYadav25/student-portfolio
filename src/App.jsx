@@ -1,7 +1,10 @@
-import Header from './components/Header';
-import About from './components/About';
-import Skills from './components/Skills';
-import Footer from './components/Footer';
+import { useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import NavBar from './components/NavBar';
+import Home from './components/Home';
+import Projects from './components/Projects';
+import Contact from './components/Contact';
+import NotFound from './components/NotFound';
 import PostgresLogo from './components/PostgresLogo';
 
 /* ─── Data passed as props to components ─── */
@@ -166,19 +169,33 @@ const socialLinksData = [
 ];
 
 function App() {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
   return (
-    <div className="app">
-      {/* Props: name, title */}
-      <Header name={studentName} title={studentTitle} />
-
-      {/* No props — self-contained bio section */}
-      <About />
-
-      {/* Props: skills array */}
-      <Skills skills={skillsData} />
-
-      {/* Props: email, socialLinks */}
-      <Footer email={contactEmail} socialLinks={socialLinksData} />
+    <div className={`app ${isDarkMode ? 'dark-mode' : ''}`}>
+      <NavBar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+      
+      <Routes>
+        <Route 
+          path="/" 
+          element={
+            <Home 
+              name={studentName} 
+              title={studentTitle} 
+              skills={skillsData} 
+              email={contactEmail} 
+              socialLinks={socialLinksData} 
+            />
+          } 
+        />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </div>
   );
 }

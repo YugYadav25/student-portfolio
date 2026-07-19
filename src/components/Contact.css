@@ -1,0 +1,110 @@
+.contact-page {
+  padding: 4rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  min-height: 80vh;
+}
+
+.contact-form-container {
+  background-color: var(--card-bg, #ffffff);
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin-top: 2rem;
+}
+
+.form-group {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.form-group label {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary, #1f2937);
+}
+
+.tooltip-toggle-btn {
+  background: var(--bg-secondary, #f3f4f6);
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: var(--text-secondary, #6b7280);
+}
+
+.tooltip-toggle-btn:hover {
+  background: #e5e7eb;
+}
+
+.help-tooltip {
+  background-color: #3b82f6;
+  color: white;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.form-control {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 8px;
+  background-color: var(--bg-secondary, #f9fafb);
+  color: var(--text-primary, #1f2937);
+  font-family: inherit;
+  font-size: 1rem;
+  resize: vertical;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.character-count {
+  text-align: right;
+  font-size: 0.85rem;
+  color: var(--text-secondary, #6b7280);
+  margin-top: 0.5rem;
+}
+
+.message-preview {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px dashed var(--border-color, #e0e0e0);
+}
+
+.message-preview h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary, #1f2937);
+}
+
+.preview-text {
+  background-color: var(--bg-secondary, #f9fafb);
+  padding: 1.5rem;
+  border-radius: 8px;
+  min-height: 100px;
+  white-space: pre-wrap;
+  color: var(--text-secondary, #4b5563);
+  font-style: italic;
+}

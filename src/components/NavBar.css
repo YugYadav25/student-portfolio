@@ -1,0 +1,74 @@
+.navbar {
+  background-color: var(--card-bg, #ffffff);
+  border-bottom: 1px solid var(--border-color, #e0e0e0);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.navbar-logo .logo-icon {
+  font-size: 1.5rem;
+  color: #3b82f6;
+}
+
+.navbar-logo .logo-text {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--text-primary, #1f2937);
+  letter-spacing: -0.02em;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--text-secondary, #6b7280);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--text-primary, #1f2937);
+}
+
+.theme-toggle-btn {
+  background: none;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 20px;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-primary, #1f2937);
+  transition: all 0.2s ease;
+  background-color: var(--card-bg, #ffffff);
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--bg-secondary, #f3f4f6);
+}
+
+/* Dark mode specific variables can be expected in index.css */
