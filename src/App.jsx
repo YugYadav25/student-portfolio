@@ -10,7 +10,7 @@ import PostgresLogo from './components/PostgresLogo';
 
 /* ─── Data passed as props to components ─── */
 const studentName = "Yug Yadav";
-const studentTitle = "Computer Science Student & Aspiring Full-Stack Developer";
+const studentTitle = "Information Technology Student & Aspiring Full-Stack Developer";
 
 const skillsData = [
   {

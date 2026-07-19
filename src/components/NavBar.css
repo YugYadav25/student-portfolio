@@ -1,6 +1,6 @@
 .navbar {
-  background-color: var(--card-bg, #ffffff);
-  border-bottom: 1px solid var(--border-color, #e0e0e0);
+  background-color: var(--bg-card, #ffffff);
+  border-bottom: 1px solid var(--border, #e0e0e0);
   padding: 1rem 0;
   position: sticky;
   top: 0;
@@ -57,14 +57,14 @@
 
 .theme-toggle-btn {
   background: none;
-  border: 1px solid var(--border-color, #e0e0e0);
+  border: 1px solid var(--border, #e0e0e0);
   border-radius: 20px;
   padding: 0.4rem 0.8rem;
   cursor: pointer;
   font-weight: 500;
   color: var(--text-primary, #1f2937);
   transition: all 0.2s ease;
-  background-color: var(--card-bg, #ffffff);
+  background-color: var(--bg-card, #ffffff);
 }
 
 .theme-toggle-btn:hover {
