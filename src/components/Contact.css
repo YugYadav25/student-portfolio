@@ -1,49 +1,50 @@
 .contact-page {
   padding: 4rem 2rem;
-  max-width: 800px;
+  max-width: 600px; /* narrowed to match image */
   margin: 0 auto;
   min-height: 80vh;
 }
 
-.contact-form-container {
-  background-color: var(--card-bg, #ffffff);
-  border: 1px solid var(--border-color, #e0e0e0);
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  margin-top: 2rem;
-}
-
-.form-group {
+.contact-title {
+  text-align: center;
+  font-size: 2rem;
   margin-bottom: 2rem;
-  position: relative;
+  color: var(--text-primary, #111827);
 }
 
-.form-group label {
+.contact-form-container {
+  background-color: var(--bg-card, #ffffff);
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.contact-header {
   display: flex;
   align-items: center;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: var(--text-primary, #1f2937);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.tooltip-toggle-btn {
-  background: var(--bg-secondary, #f3f4f6);
-  border: 1px solid var(--border-color, #e0e0e0);
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 0.5rem;
-  font-size: 0.8rem;
+.contact-prompt {
+  color: var(--text-primary, #374151);
+  font-size: 0.95rem;
+}
+
+.need-help-btn {
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
   cursor: pointer;
-  color: var(--text-secondary, #6b7280);
+  color: var(--text-primary, #374151);
+  font-weight: 500;
 }
 
-.tooltip-toggle-btn:hover {
-  background: #e5e7eb;
+.need-help-btn:hover {
+  background: #f9fafb;
 }
 
 .help-tooltip {
@@ -61,17 +62,20 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
 .form-control {
   width: 100%;
   padding: 1rem;
-  border: 1px solid var(--border-color, #e0e0e0);
-  border-radius: 8px;
-  background-color: var(--bg-secondary, #f9fafb);
+  border: 1px solid #93c5fd; /* light blue border */
+  border-radius: 6px;
+  background-color: var(--bg-primary, #ffffff);
   color: var(--text-primary, #1f2937);
   font-family: inherit;
   font-size: 1rem;
   resize: vertical;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .form-control:focus {
@@ -82,29 +86,24 @@
 
 .character-count {
   text-align: right;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--text-secondary, #6b7280);
   margin-top: 0.5rem;
 }
 
-.message-preview {
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px dashed var(--border-color, #e0e0e0);
+.send-message-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-.message-preview h3 {
-  font-size: 1.1rem;
-  margin-bottom: 1rem;
-  color: var(--text-primary, #1f2937);
-}
-
-.preview-text {
-  background-color: var(--bg-secondary, #f9fafb);
-  padding: 1.5rem;
-  border-radius: 8px;
-  min-height: 100px;
-  white-space: pre-wrap;
-  color: var(--text-secondary, #4b5563);
-  font-style: italic;
+.send-message-btn:hover {
+  background-color: #1d4ed8;
 }

@@ -28,11 +28,33 @@
 
 .project-card h3 {
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
   color: var(--text-primary, #1f2937);
 }
 
 .project-card p {
   color: var(--text-secondary, #6b7280);
   line-height: 1.6;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.view-project-link {
+  display: inline-block;
+  color: #3b82f6;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.view-project-link:hover {
+  text-decoration: underline;
+}
+
+.projects-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: var(--text-primary, #111827);
 }

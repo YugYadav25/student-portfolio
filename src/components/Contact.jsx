@@ -15,47 +15,40 @@ function Contact() {
 
   return (
     <div className="contact-page section-container">
-      <h1 className="section-title">Contact Me</h1>
+      <h1 className="section-title contact-title">Contact Me</h1>
       
       <div className="contact-form-container">
-        <div className="form-group">
-          <label htmlFor="messageInput">
-            Your Message
-            <button 
-              type="button" 
-              className="tooltip-toggle-btn" 
-              onClick={toggleTooltip}
-              aria-label="Toggle help tooltip"
-            >
-              ?
-            </button>
-          </label>
-          
-          {showTooltip && (
-            <div className="help-tooltip">
-              Please include your contact details so I can get back to you!
-            </div>
-          )}
+        <div className="contact-header">
+          <span className="contact-prompt">Send me a message below.</span>
+          <button 
+            type="button" 
+            className="need-help-btn" 
+            onClick={toggleTooltip}
+          >
+            Need Help?
+          </button>
+        </div>
+        
+        {showTooltip && (
+          <div className="help-tooltip">
+            Please include your contact details so I can get back to you!
+          </div>
+        )}
 
+        <div className="form-group">
           <textarea
             id="messageInput"
             value={message}
             onChange={handleMessageChange}
-            placeholder="Type your message here..."
             rows="5"
             className="form-control"
           />
           <div className="character-count">
-            {message.length} character{message.length !== 1 ? 's' : ''}
+            Character count: {message.length}
           </div>
         </div>
 
-        <div className="message-preview">
-          <h3>Live Preview</h3>
-          <p className="preview-text">
-            {message ? message : <em>Start typing to see preview...</em>}
-          </p>
-        </div>
+        <button className="send-message-btn">Send Message</button>
       </div>
     </div>
   );
