@@ -7,6 +7,7 @@ import Contact from './components/Contact';
 import NotFound from './components/NotFound';
 import Footer from './components/Footer';
 import PostgresLogo from './components/PostgresLogo';
+import Tasks from './components/Tasks';
 
 /* ─── Data passed as props to components ─── */
 const studentName = "Yug Yadav";
@@ -194,6 +195,7 @@ function App() {
           } 
         />
         <Route path="/projects" element={<Projects />} />
+        <Route path="/tasks" element={<Tasks />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

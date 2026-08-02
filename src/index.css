@@ -1,55 +1,72 @@
 /* ═══════════════════════════════════════════════════════
    Student Portfolio — Global Styles & Design Tokens
-   Light / White-Grey Theme
+   Premium Glassmorphism Theme
    ═══════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;700;800&display=swap');
 
 /* ─── Design Tokens ─── */
 :root {
-  /* Colors — Light Theme */
-  --bg-primary:       #ffffff;
-  --bg-secondary:     #f5f7fa;
-  --bg-card:          #ffffff;
-  --border:           #e2e5ed;
-  --text-primary:     #1a1a2e;
-  --text-secondary:   #555570;
-  --text-muted:       #8e8ea0;
-  --accent:           #06b6d4;
-  --accent-secondary: #3b82f6;
-
+  /* Colors — Light Theme (Premium Soft) */
+  --bg-primary:       #f8fafc;
+  --bg-secondary:     #f1f5f9;
+  --bg-card:          rgba(255, 255, 255, 0.7);
+  --bg-glass:         rgba(255, 255, 255, 0.6);
+  --border:           rgba(255, 255, 255, 0.8);
+  --border-light:     rgba(0, 0, 0, 0.05);
+  --text-primary:     #0f172a;
+  --text-secondary:   #475569;
+  --text-muted:       #94a3b8;
+  --accent:           #6366f1;
+  --accent-hover:     #4f46e5;
+  --accent-secondary: #ec4899;
+  
   /* Gradients */
-  --gradient-accent:  linear-gradient(135deg, #06b6d4, #3b82f6);
+  --gradient-accent:  linear-gradient(135deg, #6366f1, #ec4899);
+  --gradient-bg:      radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.08), transparent 25%),
+                      radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.08), transparent 25%);
 
-  /* Shadows */
-  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.06);
-  --shadow-md:  0 4px 16px rgba(0, 0, 0, 0.06);
-  --shadow-lg:  0 8px 30px rgba(0, 0, 0, 0.08);
+  /* Shadows (Soft & Diffused) */
+  --shadow-sm:  0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md:  0 8px 24px rgba(0, 0, 0, 0.06);
+  --shadow-lg:  0 12px 32px rgba(31, 38, 135, 0.1);
+  --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
 
   /* Typography */
   --font-body:    'Inter', system-ui, -apple-system, sans-serif;
   --font-heading: 'Outfit', 'Inter', system-ui, sans-serif;
+  
+  /* Glassmorphism Blur */
+  --glass-blur: blur(12px);
 }
 
 .dark-mode {
-  /* Colors — Dark Theme */
-  --bg-primary:       #0f172a;
-  --bg-secondary:     #1e293b;
-  --bg-card:          #1e293b;
-  --border:           #334155;
+  /* Colors — Dark Theme (Premium Deep) */
+  --bg-primary:       #020617;
+  --bg-secondary:     #0f172a;
+  --bg-card:          rgba(15, 23, 42, 0.6);
+  --bg-glass:         rgba(2, 6, 23, 0.6);
+  --border:           rgba(255, 255, 255, 0.08);
+  --border-light:     rgba(255, 255, 255, 0.03);
   --text-primary:     #f8fafc;
   --text-secondary:   #94a3b8;
-  --text-muted:       #64748b;
+  --text-muted:       #475569;
   
-  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.2);
-  --shadow-md:  0 4px 16px rgba(0, 0, 0, 0.3);
-  --shadow-lg:  0 8px 30px rgba(0, 0, 0, 0.4);
+  --gradient-bg:      radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.12), transparent 35%),
+                      radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.12), transparent 35%);
+
+  --shadow-sm:  0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md:  0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-lg:  0 12px 32px rgba(0, 0, 0, 0.6);
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
 .app {
-  background: var(--bg-primary);
+  background-color: var(--bg-primary);
+  background-image: var(--gradient-bg);
+  background-attachment: fixed;
   color: var(--text-primary);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.4s ease, color 0.4s ease, background-image 0.4s ease;
 }
 
 /* ─── Reset & Base ─── */
@@ -78,11 +95,29 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 img {
   max-width: 100%;
   display: block;
+}
+
+/* ─── Utility Classes ─── */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-glass);
+  border-radius: 16px;
+}
+
+.text-gradient {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* ─── App wrapper ─── */
@@ -96,7 +131,7 @@ img {
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
@@ -107,7 +142,7 @@ img {
 @keyframes fadeInDown {
   from {
     opacity: 0;
-    transform: translateY(-16px);
+    transform: translateY(-20px);
   }
   to {
     opacity: 1;
@@ -115,31 +150,26 @@ img {
   }
 }
 
-@keyframes pulse {
-  0%, 100% {
-    opacity: 0.4;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  50% {
-    opacity: 0.6;
-    transform: translate(-50%, -50%) scale(1.08);
-  }
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
 }
 
 /* ─── Scrollbar ─── */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(99, 102, 241, 0.35);
-  border-radius: 8px;
+  background: var(--text-muted);
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(99, 102, 241, 0.55);
+  background: var(--accent);
 }
