@@ -1,25 +1,26 @@
 import { useState, useEffect } from 'react';
+import { getTasks, createTask, updateTask, deleteTask } from '../api';
 import './Tasks.css';
 
 function Tasks() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [toast, setToast] = useState(null);
   
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [newTaskDesc, setNewTaskDesc] = useState('');
   const [isAdding, setIsAdding] = useState(false);
 
-  const API_URL = 'http://localhost:5000/tasks';
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
 
   const fetchTasks = () => {
     setLoading(true);
     setError(null);
-    fetch(API_URL)
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to fetch tasks. Is the backend running?');
-        return res.json();
-      })
+    getTasks()
       .then(data => setTasks(data))
       .catch(err => setError(err.message))
       .finally(() => setLoading(false));
@@ -33,38 +34,63 @@ function Tasks() {
     e.preventDefault();
     if (!newTaskTitle.trim()) return;
 
+    const tempId = Date.now().toString();
+    const newTask = {
+      id: tempId,
+      title: newTaskTitle,
+      description: newTaskDesc,
+      completed: false
+    };
+
+    // Optimistic UI Update
+    setTasks([...tasks, newTask]);
+    setNewTaskTitle('');
+    setNewTaskDesc('');
     setIsAdding(true);
-    fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: newTaskTitle, description: newTaskDesc })
-    })
-      .then(res => res.json())
-      .then(newTask => {
-        setTasks([...tasks, newTask]);
-        setNewTaskTitle('');
-        setNewTaskDesc('');
+
+    createTask(newTask)
+      .then(createdTask => {
+        setTasks(prev => prev.map(t => t.id === tempId ? createdTask : t));
+        showToast('Task added successfully!');
       })
-      .catch(err => setError('Error adding task'))
+      .catch(err => {
+        // Revert on error
+        setTasks(prev => prev.filter(t => t.id !== tempId));
+        showToast('Error adding task', 'error');
+      })
       .finally(() => setIsAdding(false));
   };
 
   const handleToggleComplete = (id, currentStatus) => {
-    fetch(`${API_URL}/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ completed: !currentStatus })
-    })
-      .then(res => res.json())
+    // Optimistic Update
+    setTasks(tasks.map(t => t.id === id ? { ...t, completed: !currentStatus } : t));
+    
+    updateTask(id, { completed: !currentStatus })
       .then(updatedTask => {
-        setTasks(tasks.map(t => t.id === id ? updatedTask : t));
+        setTasks(prev => prev.map(t => t.id === id ? updatedTask : t));
+        showToast('Task updated!');
+      })
+      .catch(err => {
+        // Revert
+        setTasks(prev => prev.map(t => t.id === id ? { ...t, completed: currentStatus } : t));
+        showToast('Error updating task', 'error');
       });
   };
 
   const handleDelete = (id) => {
-    fetch(`${API_URL}/${id}`, { method: 'DELETE' })
+    if (!window.confirm('Are you sure you want to delete this task?')) return;
+    
+    // Optimistic Update
+    const previousTasks = [...tasks];
+    setTasks(tasks.filter(t => t.id !== id));
+
+    deleteTask(id)
       .then(() => {
-        setTasks(tasks.filter(t => t.id !== id));
+        showToast('Task deleted!');
+      })
+      .catch(err => {
+        setTasks(previousTasks);
+        showToast('Error deleting task', 'error');
       });
   };
 
@@ -125,6 +151,14 @@ function Tasks() {
               </div>
             ))
           )}
+        </div>
+      )}
+      
+      {toast && (
+        <div className="toast-container">
+          <div className={`toast ${toast.type}`}>
+            {toast.type === 'success' ? '✅' : '❌'} {toast.message}
+          </div>
         </div>
       )}
     </div>
