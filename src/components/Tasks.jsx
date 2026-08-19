@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { getTasks, createTask, updateTask, deleteTask } from '../api';
+import Auth from './Auth';
 import './Tasks.css';
 
 function Tasks() {
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,6 +20,7 @@ function Tasks() {
   };
 
   const fetchTasks = () => {
+    if (!isAuthenticated) return;
     setLoading(true);
     setError(null);
     getTasks()
@@ -27,8 +30,26 @@ function Tasks() {
   };
 
   useEffect(() => {
-    fetchTasks();
+    const handleAuthError = () => {
+      setIsAuthenticated(false);
+      showToast('Session expired. Please log in again.', 'error');
+    };
+    
+    window.addEventListener('auth_error', handleAuthError);
+    return () => window.removeEventListener('auth_error', handleAuthError);
   }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchTasks();
+    }
+  }, [isAuthenticated]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsAuthenticated(false);
+    setTasks([]);
+  };
 
   const handleAddTask = (e) => {
     e.preventDefault();
@@ -56,7 +77,7 @@ function Tasks() {
       .catch(err => {
         // Revert on error
         setTasks(prev => prev.filter(t => t.id !== tempId));
-        showToast('Error adding task', 'error');
+        showToast(err.message || 'Error adding task', 'error');
       })
       .finally(() => setIsAdding(false));
   };
@@ -94,11 +115,28 @@ function Tasks() {
       });
   };
 
+  if (!isAuthenticated) {
+    return (
+      <div className="tasks-page glass-panel">
+        <div className="tasks-header">
+          <h1 className="text-gradient">Task Manager</h1>
+          <p>Please log in to manage your tasks.</p>
+        </div>
+        <Auth onAuthSuccess={() => setIsAuthenticated(true)} />
+      </div>
+    );
+  }
+
   return (
     <div className="tasks-page glass-panel">
-      <div className="tasks-header">
-        <h1 className="text-gradient">Task Manager</h1>
-        <p>Manage your daily goals seamlessly.</p>
+      <div className="tasks-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <h1 className="text-gradient">Task Manager</h1>
+          <p>Manage your daily goals seamlessly.</p>
+        </div>
+        <button onClick={handleLogout} className="logout-btn" style={{ padding: '8px 16px', background: 'transparent', border: '1px solid var(--text-secondary)', color: 'var(--text-secondary)', borderRadius: '6px', cursor: 'pointer' }}>
+          Log Out
+        </button>
       </div>
 
       <form className="task-form" onSubmit={handleAddTask}>
