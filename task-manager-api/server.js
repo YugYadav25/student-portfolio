@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const OpenAI = require('openai');
 
 const Task = require('./models/Task');
 const User = require('./models/User');
@@ -12,11 +13,8 @@ const validateTask = require('./middleware/validateTask');
 
 const app = express();
 const port = process.env.PORT || 5000;
-
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('MongoDB connected'))
-    .catch((err) => console.error('MongoDB connection error:', err));
+const aiRequestTimes = new Map();
+const AI_RATE_LIMIT_MS = 60 * 1000;
 
 // Middleware to parse incoming JSON requests
 app.use(express.json());
@@ -41,6 +39,60 @@ const requireJsonContent = (req, res, next) => {
 
 app.use(requireJsonContent);
 
+// GET /health: Verify that the API process is available
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'ok' });
+});
+
+// POST /api/ai/generate-description: Generate an editable task description
+app.post('/api/ai/generate-description', auth, async (req, res) => {
+    const title = typeof req.body.title === 'string' ? req.body.title.trim() : '';
+    if (!title) {
+        return res.status(400).json({ error: 'Task title is required' });
+    }
+
+    const rateLimitKey = `${req.user.id}:${title.toLowerCase()}`;
+    const lastRequestAt = aiRequestTimes.get(rateLimitKey);
+    if (lastRequestAt && Date.now() - lastRequestAt < AI_RATE_LIMIT_MS) {
+        return res.status(429).json({
+            error: 'Please wait one minute before generating another description for this task.'
+        });
+    }
+
+    aiRequestTimes.set(rateLimitKey, Date.now());
+    if (!process.env.OPENAI_API_KEY) {
+        return res.status(200).json({
+            description: 'AI suggestions are unavailable. Please add a description manually.',
+            fallback: true
+        });
+    }
+
+    try {
+        const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+        const completion = await client.chat.completions.create({
+            model: 'gpt-4o-mini',
+            messages: [{
+                role: 'user',
+                content: `Write a concise, practical task description for: ${title}`
+            }],
+            max_tokens: 80
+        });
+        const description = completion.choices[0]?.message?.content?.trim();
+
+        if (!description) {
+            throw new Error('AI provider returned an empty description');
+        }
+
+        return res.status(200).json({ description, fallback: false });
+    } catch (err) {
+        console.error('AI description generation failed:', err.message);
+        return res.status(200).json({
+            description: 'AI suggestions are temporarily unavailable. Please write a description manually.',
+            fallback: true
+        });
+    }
+});
+
 // --- Auth Routes ---
 
 // POST /register: Register a new user
@@ -57,7 +109,7 @@ app.post('/register', async (req, res, next) => {
         
         res.status(201).json({ message: 'User registered successfully', userId: user._id });
     } catch (err) {
-        if (err.code === 11000) {
+        if (err.code === 11000 && err.keyPattern && err.keyPattern.email) {
             return res.status(400).json({ error: 'Email already exists' });
         }
         next(err);
@@ -195,7 +247,19 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: 'Something went wrong on the server' });
 });
 
-// Start the server
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
+const startServer = async () => {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log('MongoDB connected');
+    app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
+    });
+};
+
+if (require.main === module) {
+    startServer().catch((err) => {
+        console.error('MongoDB connection error:', err);
+        process.exitCode = 1;
+    });
+}
+
+module.exports = { app, startServer };

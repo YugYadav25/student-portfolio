@@ -1,13 +1,14 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';
-import Home from './components/Home';
-import Projects from './components/Projects';
-import Contact from './components/Contact';
-import NotFound from './components/NotFound';
 import Footer from './components/Footer';
 import PostgresLogo from './components/PostgresLogo';
-import Tasks from './components/Tasks';
+
+const Home = lazy(() => import('./components/Home'));
+const Projects = lazy(() => import('./components/Projects'));
+const Tasks = lazy(() => import('./components/Tasks'));
+const Contact = lazy(() => import('./components/Contact'));
+const NotFound = lazy(() => import('./components/NotFound'));
 
 /* ─── Data passed as props to components ─── */
 const studentName = "Yug Yadav";
@@ -181,24 +182,26 @@ function App() {
     <div className={`app ${isDarkMode ? 'dark-mode' : ''}`}>
       <NavBar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
       
-      <Routes>
-        <Route 
-          path="/" 
-          element={
-            <Home 
-              name={studentName} 
-              title={studentTitle} 
-              skills={skillsData} 
-              email={contactEmail} 
-              socialLinks={socialLinksData} 
-            />
-          } 
-        />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/tasks" element={<Tasks />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <Suspense fallback={<div className="route-loading">Loading page...</div>}>
+        <Routes>
+          <Route 
+            path="/" 
+            element={
+              <Home 
+                name={studentName} 
+                title={studentTitle} 
+                skills={skillsData} 
+                email={contactEmail} 
+                socialLinks={socialLinksData} 
+              />
+            } 
+          />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/tasks" element={<Tasks />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
       
       <Footer />
     </div>

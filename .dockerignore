@@ -1,0 +1,5 @@
+node_modules
+dist
+.git
+.env
+task-manager-api/node_modules

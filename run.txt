@@ -1,0 +1,228 @@
+STUDENT PORTFOLIO - TERMINAL RUN COMMANDS
+=========================================
+
+These commands are for Windows PowerShell. Run them from the project root:
+
+    cd C:\student-portfolio
+
+
+1. REQUIREMENTS
+---------------
+
+Install the following software before running the project:
+
+- Node.js 18 or newer (Node.js 22 is recommended)
+- npm (included with Node.js)
+- MongoDB, either:
+  - MongoDB Community Server running locally, or
+  - a MongoDB Atlas connection string
+- Docker Desktop (only required for the Docker option)
+
+Check Node.js and npm:
+
+    node --version
+    npm --version
+
+
+2. FIRST-TIME INSTALLATION
+--------------------------
+
+Install frontend dependencies:
+
+    cd C:\student-portfolio
+    npm install
+
+Install backend dependencies:
+
+    cd C:\student-portfolio\task-manager-api
+    npm install
+
+Return to the project root:
+
+    cd C:\student-portfolio
+
+
+3. CONFIGURE THE BACKEND
+------------------------
+
+The backend needs MongoDB and a JWT secret. Create the root environment file:
+
+    cd C:\student-portfolio
+    New-Item -Path .env -ItemType File -Force
+    notepad .env
+
+Put these values in .env, then save and close Notepad:
+
+    MONGO_URI=mongodb://127.0.0.1:27017/student_portfolio
+    JWT_SECRET=replace-this-with-a-long-random-secret
+
+For MongoDB Atlas, replace MONGO_URI with the Atlas connection string, for example:
+
+    MONGO_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/student_portfolio
+
+Do not commit .env or share its database password or JWT secret.
+
+
+4. RUN LOCALLY (RECOMMENDED)
+----------------------------
+
+Open two PowerShell windows.
+
+TERMINAL 1 - Start the backend API:
+
+    cd C:\student-portfolio\task-manager-api
+    node server.js
+
+The API runs at:
+
+    http://localhost:5000
+
+Keep this terminal open.
+
+TERMINAL 2 - Start the frontend:
+
+    cd C:\student-portfolio
+    npm run dev
+
+Open the URL printed by Vite, normally:
+
+    http://localhost:5173
+
+Keep this terminal open while using the website.
+
+Stop either development server with:
+
+    Ctrl+C
+
+
+5. CHECK THE API
+----------------
+
+In another PowerShell window, check that the API is responding:
+
+    Invoke-WebRequest http://localhost:5000/tasks
+
+The task routes require login, so an authorization error is expected until a
+user logs in through the website.
+
+
+6. RUN THE FRONTEND PRODUCTION BUILD
+------------------------------------
+
+Build the frontend:
+
+    cd C:\student-portfolio
+    npm run build
+
+Preview the production build locally:
+
+    npm run preview
+
+Open the preview URL printed by Vite, normally:
+
+    http://localhost:4173
+
+Run the linter:
+
+    npm run lint
+
+
+7. RUN WITH DOCKER COMPOSE
+--------------------------
+
+Make sure Docker Desktop is running. The root .env file from section 3 must
+exist before starting Compose.
+
+Build the frontend and backend images, then start both containers:
+
+    cd C:\student-portfolio
+    docker compose up --build
+
+Run both containers in the background instead:
+
+    docker compose up -d --build
+
+Open the website at:
+
+    http://localhost:5173
+
+The backend API is available at:
+
+    http://localhost:5000
+
+View container logs:
+
+    docker compose logs -f
+
+View only backend logs:
+
+    docker compose logs -f backend
+
+View only frontend logs:
+
+    docker compose logs -f frontend
+
+Check container status:
+
+    docker compose ps
+
+Stop the containers:
+
+    docker compose down
+
+Stop the containers and remove their images:
+
+    docker compose down --rmi local
+
+
+8. OPTIONAL ASSIGNMENT-W4 SERVER
+--------------------------------
+
+The assignment server is a separate in-memory CRUD server. It does not use
+MongoDB or the main task-manager-api.
+
+Open a separate PowerShell window:
+
+    cd C:\student-portfolio\assignments\assignment-w4
+    node server.js
+
+It uses the port configured in that file. Stop it with:
+
+    Ctrl+C
+
+
+9. COMMON TROUBLESHOOTING
+-------------------------
+
+If npm commands fail because dependencies are missing, run:
+
+    cd C:\student-portfolio
+    npm install
+    cd task-manager-api
+    npm install
+
+If the backend reports a MongoDB connection error:
+
+- Start the local MongoDB service, or
+- Check MONGO_URI in C:\student-portfolio\.env, or
+- Confirm that the Atlas network access rules allow your IP address.
+
+If port 5173 is already in use, stop the other process or run Vite on another
+port:
+
+    cd C:\student-portfolio
+    npm run dev -- --port 5174
+
+If port 5000 is already in use, stop the other process before starting the
+backend. The frontend API URL is configured for:
+
+    http://localhost:5000
+
+If Docker Compose cannot find .env, create it in:
+
+    C:\student-portfolio\.env
+
+Then run:
+
+    cd C:\student-portfolio
+    docker compose up --build

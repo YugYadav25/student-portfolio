@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getTasks, createTask, updateTask, deleteTask } from '../api';
+import { getTasks, createTask, updateTask, deleteTask, generateTaskDescription } from '../api';
 import Auth from './Auth';
 import './Tasks.css';
 
@@ -13,6 +13,7 @@ function Tasks() {
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [newTaskDesc, setNewTaskDesc] = useState('');
   const [isAdding, setIsAdding] = useState(false);
+  const [isGeneratingDescription, setIsGeneratingDescription] = useState(false);
 
   const showToast = (message, type = 'success') => {
     setToast({ message, type });
@@ -80,6 +81,27 @@ function Tasks() {
         showToast(err.message || 'Error adding task', 'error');
       })
       .finally(() => setIsAdding(false));
+  };
+
+  const handleGenerateDescription = () => {
+    if (!newTaskTitle.trim()) {
+      showToast('Enter a task title first.', 'error');
+      return;
+    }
+
+    setIsGeneratingDescription(true);
+    generateTaskDescription(newTaskTitle)
+      .then(({ description, fallback }) => {
+        setNewTaskDesc(description);
+        showToast(
+          fallback
+            ? 'AI is unavailable. You can edit the fallback description.'
+            : 'AI description generated. Review it before saving.',
+          fallback ? 'error' : 'success'
+        );
+      })
+      .catch(err => showToast(err.message || 'Unable to generate description', 'error'))
+      .finally(() => setIsGeneratingDescription(false));
   };
 
   const handleToggleComplete = (id, currentStatus) => {
@@ -156,11 +178,22 @@ function Tasks() {
             onChange={(e) => setNewTaskDesc(e.target.value)}
             disabled={isAdding}
           />
+          <button
+            type="button"
+            className="ai-btn"
+            onClick={handleGenerateDescription}
+            disabled={isAdding || isGeneratingDescription || !newTaskTitle.trim()}
+          >
+            {isGeneratingDescription ? 'Generating...' : 'Generate description'}
+          </button>
         </div>
         <button type="submit" className="add-btn" disabled={isAdding || !newTaskTitle.trim()}>
           {isAdding ? 'Adding...' : 'Add Task'}
         </button>
       </form>
+      <p className="ai-disclaimer">
+        AI-generated suggestions are editable and should be reviewed before saving.
+      </p>
 
       {loading ? (
         <div className="loading-state">Loading tasks...</div>

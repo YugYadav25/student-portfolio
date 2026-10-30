@@ -69,3 +69,11 @@ export const deleteTask = (id) => {
         headers: getAuthHeaders()
     }).then(handleResponse).then(normalizeTask);
 };
+
+export const generateTaskDescription = (title) => {
+    return fetch(`${BASE_URL}/api/ai/generate-description`, {
+        method: 'POST',
+        headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ title })
+    }).then(handleResponse);
+};
