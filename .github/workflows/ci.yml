@@ -17,11 +17,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
           cache: npm
 
       - name: Install frontend dependencies
-        run: npm install
+        run: npm install --include=optional
 
       - name: Run linter
         run: npm run lint
@@ -37,13 +37,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
           cache: npm
           cache-dependency-path: task-manager-api/package-lock.json
 
       - name: Install backend dependencies
         working-directory: task-manager-api
-        run: npm install
+        run: npm install --include=optional
 
       - name: Run automated tests
         working-directory: task-manager-api
