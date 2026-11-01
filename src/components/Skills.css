@@ -15,7 +15,7 @@
 }
 
 .skills-container {
-  max-width: 900px;
+  max-width: 1120px;
   margin: 0 auto;
 }
 
@@ -23,7 +23,7 @@
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
+  gap: 1.15rem;
 }
 
 .skill-card {
@@ -31,8 +31,8 @@
   flex-direction: column;
   align-items: center;
   gap: 0.6rem;
-  padding: 1.5rem 1rem;
-  border-radius: 16px;
+  padding: 1.35rem 1.15rem;
+  border-radius: 14px;
   background: var(--bg-card);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);

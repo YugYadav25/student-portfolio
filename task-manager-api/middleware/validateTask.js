@@ -1,11 +1,15 @@
 const validateTask = (req, res, next) => {
-    // Only check for title on POST or PUT
-    if (req.method === 'POST' || req.method === 'PUT') {
+    if (req.method === 'POST') {
         const { title } = req.body;
         
         if (!title || typeof title !== 'string' || title.trim() === '') {
             return res.status(400).json({ error: 'Validation Error: Title is required and cannot be empty' });
         }
+    }
+
+    if (req.method === 'PUT' && req.body.title !== undefined &&
+        (typeof req.body.title !== 'string' || req.body.title.trim() === '')) {
+        return res.status(400).json({ error: 'Validation Error: Title cannot be empty' });
     }
     
     next();

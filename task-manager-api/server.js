@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const OpenAI = require('openai');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const Task = require('./models/Task');
 const User = require('./models/User');
@@ -60,7 +60,7 @@ app.post('/api/ai/generate-description', auth, async (req, res) => {
     }
 
     aiRequestTimes.set(rateLimitKey, Date.now());
-    if (!process.env.OPENAI_API_KEY) {
+    if (!process.env.GEMINI_API_KEY) {
         return res.status(200).json({
             description: 'AI suggestions are unavailable. Please add a description manually.',
             fallback: true
@@ -68,16 +68,14 @@ app.post('/api/ai/generate-description', auth, async (req, res) => {
     }
 
     try {
-        const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-        const completion = await client.chat.completions.create({
-            model: 'gpt-4o-mini',
-            messages: [{
-                role: 'user',
-                content: `Write a concise, practical task description for: ${title}`
-            }],
-            max_tokens: 80
+        const client = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+        const model = client.getGenerativeModel({
+            model: process.env.GEMINI_MODEL || 'gemini-2.5-flash'
         });
-        const description = completion.choices[0]?.message?.content?.trim();
+        const result = await model.generateContent(
+            `Write a concise, practical task description for: ${title}`
+        );
+        const description = result.response.text().trim();
 
         if (!description) {
             throw new Error('AI provider returned an empty description');
@@ -86,9 +84,11 @@ app.post('/api/ai/generate-description', auth, async (req, res) => {
         return res.status(200).json({ description, fallback: false });
     } catch (err) {
         console.error('AI description generation failed:', err.message);
-        return res.status(200).json({
-            description: 'AI suggestions are temporarily unavailable. Please write a description manually.',
-            fallback: true
+        const isAuthenticationError = /api key|unauthorized|permission|forbidden/i.test(err.message);
+        return res.status(isAuthenticationError ? 502 : 503).json({
+            error: isAuthenticationError
+                ? 'Gemini API key is invalid or does not have access. Update GEMINI_API_KEY and restart the backend.'
+                : 'Gemini is temporarily unavailable. Please try again or add a description manually.'
         });
     }
 });

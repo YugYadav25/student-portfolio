@@ -27,11 +27,10 @@ const taskSchema = new mongoose.Schema({
 });
 
 // Pre-save hook to trim whitespace from the title
-taskSchema.pre('save', function(next) {
+taskSchema.pre('save', function() {
     if (this.title) {
         this.title = this.title.trim();
     }
-    next();
 });
 
 module.exports = mongoose.model('Task', taskSchema);

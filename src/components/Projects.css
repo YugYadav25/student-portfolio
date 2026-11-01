@@ -1,5 +1,5 @@
 .projects-page {
-  padding: 4rem 2rem;
+  padding: 6rem 2rem 8rem;
   max-width: 1200px;
   margin: 0 auto;
   min-height: 80vh;
@@ -7,26 +7,28 @@
 }
 
 .projects-title {
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 2.5rem;
+  text-align: left;
+  font-size: clamp(3rem,7vw,5.5rem);
+  margin-bottom: 1rem;
   color: var(--text-primary);
   background: var(--gradient-accent);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
+.projects-page::after{content:'Selected work / 2026';display:block;color:var(--text-muted);font:500 .72rem 'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2.5rem}
+
 /* Controls & Search */
 .projects-controls {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   margin-bottom: 2.5rem;
 }
 
 .search-container {
   position: relative;
   width: 100%;
-  max-width: 400px;
+  max-width: 460px;
 }
 
 .search-icon {
@@ -67,8 +69,8 @@
 .project-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 1.75rem;
+  border-radius: 18px;
+  padding: 1.9rem;
   box-shadow: var(--shadow-md);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
@@ -84,7 +86,7 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
+  height: 5px;
   background: var(--gradient-accent);
   transform: scaleX(0);
   transform-origin: left;
@@ -111,7 +113,7 @@
 
 .project-card h3 {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   color: var(--text-primary);
   font-family: var(--font-heading);
   text-transform: capitalize;

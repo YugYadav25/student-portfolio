@@ -1,7 +1,7 @@
 .tasks-page {
-  max-width: 800px;
-  margin: 120px auto 60px;
-  padding: 40px;
+  max-width: 980px;
+  margin: 72px auto 80px;
+  padding: clamp(24px,5vw,48px);
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -9,11 +9,13 @@
 }
 
 .tasks-header {
-  text-align: center;
+  text-align: left;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
 }
 
 .tasks-header h1 {
-  font-size: 2.5rem;
+  font-size: clamp(2.4rem,5vw,4rem);
   font-family: var(--font-heading);
   margin-bottom: 8px;
 }
@@ -24,7 +26,11 @@
 
 .task-form {
   display: flex;
-  gap: 16px;
+  gap: 18px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: color-mix(in srgb,var(--bg-secondary) 55%,transparent);
   align-items: stretch;
 }
 
@@ -37,7 +43,7 @@
 
 .input-group input {
   padding: 14px 20px;
-  border-radius: 12px;
+  border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--bg-primary);
   color: var(--text-primary);
@@ -55,7 +61,7 @@
 .ai-btn {
   align-self: flex-start;
   padding: 10px 16px;
-  border-radius: 10px;
+  border-radius: 99px;
   border: 1px solid var(--accent);
   background: transparent;
   color: var(--accent);
@@ -81,7 +87,7 @@
 
 .add-btn {
   padding: 0 32px;
-  border-radius: 12px;
+  border-radius: 10px;
   border: none;
   background: var(--gradient-accent);
   color: white;
@@ -110,9 +116,9 @@
 .task-item {
   display: flex;
   align-items: center;
-  padding: 20px;
+  padding: 20px 22px;
   background: var(--bg-card);
-  border-radius: 12px;
+  border-radius: 16px;
   border: 1px solid var(--border);
   gap: 16px;
   transition: all 0.3s ease;
@@ -191,7 +197,10 @@
 
 .empty-state, .loading-state, .error-state {
   text-align: center;
-  padding: 40px;
+  padding: 64px 40px;
+  border: 1px dashed var(--border);
+  border-radius: 16px;
+  background: color-mix(in srgb,var(--bg-secondary) 55%,transparent);
   color: var(--text-muted);
   font-weight: 500;
 }

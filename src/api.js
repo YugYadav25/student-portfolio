@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const normalizeTask = (task) => ({ ...task, id: task._id || task.id });
 
@@ -48,10 +48,12 @@ export const getTasks = () => {
 };
 
 export const createTask = (task) => {
+    const taskPayload = { ...task };
+    delete taskPayload.id;
     return fetch(`${BASE_URL}/tasks`, {
         method: 'POST',
         headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
-        body: JSON.stringify(task)
+        body: JSON.stringify(taskPayload)
     }).then(handleResponse).then(normalizeTask);
 };
 
