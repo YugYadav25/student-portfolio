@@ -16,7 +16,7 @@ function About() {
         <div className="about-content">
           <div className="about-text">
             <p>
-              I'm a Computer Science student with a deep passion for creating elegant,
+              I'm an Information Technology student with a deep passion for creating elegant,
               user-friendly applications. Currently focused on full-stack web development,
               I love turning complex problems into simple, beautiful designs.
             </p>

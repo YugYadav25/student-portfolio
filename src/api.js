@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:5000';
+const BASE_URL = 'http://localhost:3000';
 
 const normalizeTask = (task) => ({ ...task, id: task._id || task.id });
 
